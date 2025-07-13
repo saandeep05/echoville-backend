@@ -32,4 +32,9 @@ public class CommunityServiceImpl implements CommunityService {
         community = communityRepository.save(community);
         return community.toDto();
     }
+
+    public Community getCommunity(Long id) {
+        Community community = communityRepository.findById(id).orElse(null);
+        return community;
+    }
 }

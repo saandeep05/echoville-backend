@@ -8,6 +8,7 @@ import com.saandeepkotte.echoville.service.CompanyService;
 import com.saandeepkotte.echoville.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 @Service
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
+    @Lazy
     private UserService userService;
     @Autowired
     private CompanyRepository companyRepository;

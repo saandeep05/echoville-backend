@@ -1,9 +1,12 @@
 package com.saandeepkotte.echoville.dto;
 
+import com.saandeepkotte.echoville.utils.enums.UserRole;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,4 +23,11 @@ public class UserDTO {
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
     private String phone;
+    private String companyId;
+    private Long communityId;
+    private Long houseId;
+    private List<Long> issueIds;
+    private List<Long> postId;
+    private UserRole role;
+    private Long id;
 }

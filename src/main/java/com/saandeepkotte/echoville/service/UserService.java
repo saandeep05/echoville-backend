@@ -5,6 +5,9 @@ import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.EchoUser;
 
+import java.util.Optional;
+
 public interface UserService extends BaseService {
     EchoUser createNewUserForCompany(UserDTO userDTO, Company company) throws EchoException;
+    UserDTO createAdmin(UserDTO userDTO, String companyId, Optional<Long> communityId) throws EchoException;
 }

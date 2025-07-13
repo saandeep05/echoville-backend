@@ -1,5 +1,6 @@
 package com.saandeepkotte.echoville.model;
 
+import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.utils.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,4 +48,22 @@ public class EchoUser extends BaseEntity {
 
     @OneToMany(mappedBy = "raisedBy")
     private List<Issue> issues = new ArrayList<>();
+
+    public UserDTO toDto() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(id);
+        userDTO.setUsername(username);
+        userDTO.setEmail(email);
+        userDTO.setPassword(null);
+        userDTO.setPhone(phone);
+        userDTO.setFirstName(firstName);
+        userDTO.setLastName(lastName);
+        userDTO.setCompanyId(company != null ? company.getId() : null);
+        userDTO.setCommunityId(community != null ? community.getId() : null);
+        userDTO.setHouseId(house != null ? house.getId() : null);
+        userDTO.setIssueIds(issues.stream().map(Issue::getId).toList());
+        userDTO.setPostId(posts.stream().map(Post::getId).toList());
+        userDTO.setRole(role);
+        return userDTO;
+    }
 }

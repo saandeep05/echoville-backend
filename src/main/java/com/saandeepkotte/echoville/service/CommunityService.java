@@ -6,4 +6,5 @@ import com.saandeepkotte.echoville.model.Community;
 
 public interface CommunityService extends BaseService {
     CommunityDTO createNewCommunity(CommunityDTO communityDTO) throws EchoException;
+    Community getCommunity(Long id);
 }
