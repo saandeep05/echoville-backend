@@ -4,6 +4,7 @@ import com.saandeepkotte.echoville.controller.helper.RestControllerHelper;
 import com.saandeepkotte.echoville.dto.CompanyCreateDTO;
 import com.saandeepkotte.echoville.dto.CompanyDTO;
 import com.saandeepkotte.echoville.dto.EntityDTO;
+import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.service.CompanyService;
 import com.saandeepkotte.echoville.utils.urls.RequestPathURLs;
@@ -24,8 +25,13 @@ public class CompanyController {
 
     @PostMapping(RequestPathURLs.DEFAULT)
     public ResponseEntity<EntityDTO<Company>> createNewCompany(@Valid @RequestBody CompanyCreateDTO companyCreateDTO) {
-        Company company = companyService.createNewCompany(companyCreateDTO);
-        EntityDTO<Company> entityDTO = RestControllerHelper.getResponseEntity(company);
+        EntityDTO<Company> entityDTO = null;
+        try{
+            Company company = companyService.createNewCompany(companyCreateDTO);
+            entityDTO = RestControllerHelper.getResponseEntity(company, null);
+        } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
 }

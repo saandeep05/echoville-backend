@@ -1,6 +1,7 @@
 package com.saandeepkotte.echoville.service.impl;
 
 import com.saandeepkotte.echoville.dto.UserDTO;
+import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.repository.EchoUserRepository;
@@ -15,7 +16,11 @@ public class UserServiceImpl implements UserService {
     private EchoUserRepository userRepository;
 
     @Override
-    public EchoUser createNewUserForCompany(UserDTO userDTO, Company company) {
+    public EchoUser createNewUserForCompany(UserDTO userDTO, Company company) throws EchoException {
+        String email = userDTO.getEmail();
+        if(isAdminAlreadyPresent(email, company.getId())) {
+            throw new EchoException("A company admin with email id " + email + " already exists for company " + company.getName());
+        }
         EchoUser user = new EchoUser();
         user.setCompany(company);
         user.setUsername(userDTO.getUsername());
@@ -31,5 +36,14 @@ public class UserServiceImpl implements UserService {
     private EchoUser saveUser(EchoUser user) {
         // impl: space left for implementing password encoding
         return userRepository.save(user);
+    }
+
+    private boolean isAdminAlreadyPresent(String email, String companyId) {
+        Integer count = getAdminsWithEmail(email, companyId);
+        return count != 0;
+    }
+
+    private Integer getAdminsWithEmail(String email, String companyId) {
+        return userRepository.getAdminCount(email, companyId);
     }
 }
