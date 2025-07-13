@@ -33,4 +33,9 @@ public class CompanyServiceImpl implements CompanyService {
             throw e;
         }
     }
+
+    @Override
+    public Company getCompany(String id) {
+        return companyRepository.findById(id).orElse(null);
+    }
 }
