@@ -1,4 +1,4 @@
-package com.saandeepkotte.echoville;
+package com.saandeepkotte.echoville.controller;
 
 import com.saandeepkotte.echoville.controller.helper.RestControllerHelper;
 import com.saandeepkotte.echoville.dto.EntityDTO;
@@ -7,7 +7,6 @@ import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.service.UserService;
 import com.saandeepkotte.echoville.utils.urls.RequestPathURLs;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
