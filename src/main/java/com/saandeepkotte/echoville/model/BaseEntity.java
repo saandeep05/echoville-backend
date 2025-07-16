@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Audited
 @MappedSuperclass
 @Data
-public abstract class BaseEntity {
+public abstract class BaseEntity<MODEL, DTO> {
     @Column(name = "created_at", updatable = false)
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
@@ -27,4 +27,8 @@ public abstract class BaseEntity {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    public abstract DTO toDto();
+
+    public abstract MODEL toModel(DTO dto);
 }

@@ -1,5 +1,6 @@
 package com.saandeepkotte.echoville.model;
 
+import com.saandeepkotte.echoville.dto.IssueDTO;
 import com.saandeepkotte.echoville.utils.enums.IssueStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Issue extends BaseEntity {
+public class Issue extends BaseEntity<Issue, IssueDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "issue_id")
@@ -31,5 +32,26 @@ public class Issue extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "raised_by")
     private EchoUser raisedBy;
+
+    @Override
+    public IssueDTO toDto() {
+        IssueDTO issueDTO = new IssueDTO();
+        issueDTO.setId(id);
+        issueDTO.setTitle(title);
+        issueDTO.setDesctiption(description);
+        issueDTO.setStatus(status);
+        issueDTO.setResidentId(raisedBy.getId());
+        issueDTO.setCommunityId(community.getId());
+        return issueDTO;
+    }
+
+    @Override
+    public Issue toModel(IssueDTO issueDTO) {
+        this.setId(issueDTO.getId());
+        this.setTitle(issueDTO.getTitle());
+        this.setDescription(issueDTO.getDesctiption());
+        this.setStatus(issueDTO.getStatus());
+        return this;
+    }
 }
 

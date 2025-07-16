@@ -17,7 +17,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "echo_user")
-public class EchoUser extends BaseEntity {
+public class EchoUser extends BaseEntity<EchoUser, UserDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -49,6 +49,7 @@ public class EchoUser extends BaseEntity {
     @OneToMany(mappedBy = "raisedBy")
     private List<Issue> issues = new ArrayList<>();
 
+    @Override
     public UserDTO toDto() {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(id);
@@ -65,5 +66,17 @@ public class EchoUser extends BaseEntity {
         userDTO.setPostId(posts.stream().map(Post::getId).toList());
         userDTO.setRole(role);
         return userDTO;
+    }
+
+    @Override
+    public EchoUser toModel(UserDTO userDTO) {
+        this.setId(userDTO.getId());
+        this.setUsername(userDTO.getUsername());
+        this.setEmail(userDTO.getEmail());
+        this.setPassword(userDTO.getPassword());
+        this.setPhone(userDTO.getPhone());
+        this.setFirstName(userDTO.getFirstName());
+        this.setLastName(userDTO.getLastName());
+        return this;
     }
 }

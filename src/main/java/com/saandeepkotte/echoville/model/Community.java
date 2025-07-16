@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Community extends BaseEntity {
+public class Community extends BaseEntity<Community, CommunityDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "community_id")
@@ -56,6 +56,14 @@ public class Community extends BaseEntity {
         communityDTO.setIssues(issues.stream().map(Issue::getId).toList());
         communityDTO.setBills(bills.stream().map(Bill::getId).toList());
         return communityDTO;
+    }
+
+    @Override
+    public Community toModel(CommunityDTO communityDTO) {
+        this.setId(communityDTO.getId());
+        this.setName(communityDTO.getName());
+        this.setLocation(communityDTO.getLocation());
+        return this;
     }
 }
 
