@@ -12,10 +12,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/company")
@@ -34,4 +33,29 @@ public class CompanyController {
         }
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
+
+    @GetMapping(RequestPathURLs.DEFAULT)
+    public ResponseEntity<EntityDTO<List<CompanyDTO>>> getAllCompanies() {
+        EntityDTO<List<CompanyDTO>> entityDTO = null;
+        try {
+            List<Company> company = companyService.getAll();
+            entityDTO = RestControllerHelper.getResponseEntity(company.stream().map(Company::toDto).toList(), null);
+        } catch(EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(RequestPathURLs.FOR_COMPANY_ID)
+    public ResponseEntity<EntityDTO<CompanyDTO>> getCompany(@PathVariable("companyId") String companyId) {
+        EntityDTO<CompanyDTO> entityDTO = null;
+        try {
+            CompanyDTO companyDTO = companyService.getCompany(companyId).toDto();
+            entityDTO = RestControllerHelper.getResponseEntity(companyDTO, null);
+        } catch(EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
 }

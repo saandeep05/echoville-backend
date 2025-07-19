@@ -32,4 +32,14 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company, String> impleme
             throw e;
         }
     }
+
+    @Override
+    public Company getCompany(String companyId) {
+        Optional<Company> company = companyRepository.findById(companyId);
+        if(company.isPresent()) {
+            return company.get();
+        } else {
+            throw new EchoException("No company found with given id: " + companyId);
+        }
+    }
 }
