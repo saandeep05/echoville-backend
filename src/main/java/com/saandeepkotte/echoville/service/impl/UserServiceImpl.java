@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements UserService {
     @Autowired
     private EchoUserRepository userRepository;
     @Autowired
