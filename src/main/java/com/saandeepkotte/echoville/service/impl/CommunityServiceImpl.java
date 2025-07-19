@@ -6,21 +6,21 @@ import com.saandeepkotte.echoville.model.Community;
 import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.repository.CommunityRepository;
 import com.saandeepkotte.echoville.service.CommunityService;
-import com.saandeepkotte.echoville.service.CompanyService;
+import com.saandeepkotte.echoville.service.OnboardingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
     @Autowired
-    private CompanyService companyService;
+    private OnboardingService onboardingService;
     @Autowired
     private CommunityRepository communityRepository;
 
     @Override
     public CommunityDTO createNewCommunity(CommunityDTO communityDTO) throws EchoException {
         String companyId = communityDTO.getCompanyId();
-        Company company = companyService.getCompany(companyId);
+        Company company = onboardingService.getCompany(companyId);
         if(company == null) {
             throw new EchoException("Could not find the given company");
         }
@@ -31,10 +31,5 @@ public class CommunityServiceImpl implements CommunityService {
 
         community = communityRepository.save(community);
         return community.toDto();
-    }
-
-    public Community getCommunity(Long id) {
-        Community community = communityRepository.findById(id).orElse(null);
-        return community;
     }
 }
