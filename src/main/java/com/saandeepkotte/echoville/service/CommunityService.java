@@ -1,9 +1,16 @@
 package com.saandeepkotte.echoville.service;
 
 import com.saandeepkotte.echoville.dto.CommunityDTO;
+import com.saandeepkotte.echoville.dto.EntityDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
 
+import java.util.List;
+
 public interface CommunityService extends BaseService<Community> {
     CommunityDTO createNewCommunity(CommunityDTO communityDTO) throws EchoException;
+
+    List<CommunityDTO> getAllCommunities(String companyId, Long communityId);
+
+    List<CommunityDTO> getCommunitiesByCompanyId(String companyId);
 }
