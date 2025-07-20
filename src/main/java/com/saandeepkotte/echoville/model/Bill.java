@@ -27,6 +27,10 @@ public class Bill extends BaseEntity<Bill, BillDTO> {
     @Enumerated(EnumType.STRING)
     private BillStatus status;
 
+    private String title;
+
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "house_id")
     private House house;
@@ -34,6 +38,10 @@ public class Bill extends BaseEntity<Bill, BillDTO> {
     @ManyToOne
     @JoinColumn(name = "community_id")
     private Community community;
+
+    public Bill(BillDTO billDTO) {
+        this.toModel(billDTO);
+    }
 
     @Override
     public BillDTO toDto() {
@@ -44,6 +52,8 @@ public class Bill extends BaseEntity<Bill, BillDTO> {
         billDTO.setStatus(status);
         billDTO.setHouseId(house.getId());
         billDTO.setCommunityId(community.getId());
+        billDTO.setTitle(title);
+        billDTO.setDescription(description);
         return billDTO;
     }
 
@@ -53,6 +63,18 @@ public class Bill extends BaseEntity<Bill, BillDTO> {
         this.setAmount(billDTO.getAmount());
         this.setDueDate(billDTO.getDueDate());
         this.setStatus(billDTO.getStatus());
+        this.setTitle(billDTO.getTitle());
+        this.setDescription(billDTO.getDescription());
+        if(billDTO.getHouseId() != null) {
+            House house = new House();
+            house.setId(billDTO.getHouseId());
+            this.setHouse(house);
+        }
+        if(billDTO.getCommunityId() != null) {
+            Community community = new Community();
+            community.setId(billDTO.getCommunityId());
+            this.setCommunity(community);
+        }
         return this;
     }
 }
