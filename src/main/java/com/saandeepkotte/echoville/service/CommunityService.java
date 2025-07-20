@@ -22,4 +22,6 @@ public interface CommunityService extends BaseService<Community> {
     UserDTO createNewResident(String companyId, Long communityId, @Valid UserDTO userDTO);
 
     List<HouseDTO> createNewHouses(String companyId, Long communityId, @Valid List<HouseDTO> houseDTOList);
+
+    List<HouseDTO> getAllHouses(String companyId, Long communityId);
 }

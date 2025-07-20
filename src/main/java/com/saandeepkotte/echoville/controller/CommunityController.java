@@ -88,4 +88,17 @@ public class CommunityController {
         }
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
+
+    @GetMapping(RequestPathURLs.COMMUNITY_HOUSES)
+    public ResponseEntity<EntityDTO<List<HouseDTO>>> getAllHouses(@RequestHeader("companyId") String companyId,
+                                                                  @PathVariable("communityId") Long communityId) {
+        EntityDTO<List<HouseDTO>> entityDTO = null;
+        try {
+            List<HouseDTO> houseDTOList = communityService.getAllHouses(companyId, communityId);
+            entityDTO = RestControllerHelper.getResponseEntity(houseDTOList, null);
+        } catch(EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
 }

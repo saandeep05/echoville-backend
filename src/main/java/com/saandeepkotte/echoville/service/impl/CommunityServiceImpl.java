@@ -8,6 +8,7 @@ import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
 import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.EchoUser;
+import com.saandeepkotte.echoville.model.House;
 import com.saandeepkotte.echoville.repository.CommunityRepository;
 import com.saandeepkotte.echoville.service.*;
 import com.saandeepkotte.echoville.utils.enums.UserRole;
@@ -85,6 +86,15 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community, Long> imple
     @Override
     public List<HouseDTO> createNewHouses(String companyId, Long communityId, List<HouseDTO> houseDTOList) {
         return houseService.createHousesInBulk(companyId, communityId, houseDTOList);
+    }
+
+    @Override
+    public List<HouseDTO> getAllHouses(String companyId, Long communityId) {
+        if(!validationHelperService.isValidCommunity(companyId, communityId)) {
+            throw new EchoException("Invalid Community");
+        }
+        Optional<Community> community = communityRepository.findById(communityId);
+        return community.get().getHouses().stream().map(House::toDto).toList();
     }
 
     public CommunityDTO getCommunity(String companyId, Long communityId) {
