@@ -3,6 +3,7 @@ package com.saandeepkotte.echoville.controller;
 import com.saandeepkotte.echoville.controller.helper.RestControllerHelper;
 import com.saandeepkotte.echoville.dto.CommunityDTO;
 import com.saandeepkotte.echoville.dto.EntityDTO;
+import com.saandeepkotte.echoville.dto.HouseDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
@@ -68,6 +69,20 @@ public class CommunityController {
         try {
             UserDTO createdUserDTO = communityService.createNewResident(companyId, communityId, userDTO);
             entityDTO = RestControllerHelper.getResponseEntity(createdUserDTO, null);
+        } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @PostMapping(RequestPathURLs.COMMUNITY_HOUSES)
+    public ResponseEntity<EntityDTO<List<HouseDTO>>> createHouses(@RequestHeader("companyId") String companyId,
+                                                           @PathVariable("communityId") Long communityId,
+                                                           @Valid @RequestBody List<HouseDTO> houseDTOList) {
+        EntityDTO<List<HouseDTO>> entityDTO = null;
+        try {
+            houseDTOList = communityService.createNewHouses(companyId, communityId, houseDTOList);
+            entityDTO = RestControllerHelper.getResponseEntity(houseDTOList, null);
         } catch (EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
         }

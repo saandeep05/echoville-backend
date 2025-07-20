@@ -1,6 +1,7 @@
 package com.saandeepkotte.echoville.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class HouseDTO {
     private String number;
     @NotBlank(message = "House type is required")
     private String type;
-    @NotBlank(message = "Community is required")
+    @NotNull(message = "Community is required")
     private Long communityId;
     private List<Long> residents;
     private List<Long> bills;

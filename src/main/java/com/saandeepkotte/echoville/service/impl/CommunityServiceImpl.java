@@ -2,16 +2,14 @@ package com.saandeepkotte.echoville.service.impl;
 
 import com.saandeepkotte.echoville.dto.CommunityDTO;
 import com.saandeepkotte.echoville.dto.EntityDTO;
+import com.saandeepkotte.echoville.dto.HouseDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
 import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.repository.CommunityRepository;
-import com.saandeepkotte.echoville.service.CommunityService;
-import com.saandeepkotte.echoville.service.OnboardingService;
-import com.saandeepkotte.echoville.service.UserService;
-import com.saandeepkotte.echoville.service.ValidationHelperService;
+import com.saandeepkotte.echoville.service.*;
 import com.saandeepkotte.echoville.utils.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +27,8 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community, Long> imple
     private ValidationHelperService validationHelperService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private HouseService houseService;
 
     @Override
     public CommunityDTO createNewCommunity(CommunityDTO communityDTO) throws EchoException {
@@ -80,6 +80,11 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community, Long> imple
     @Override
     public UserDTO createNewResident(String companyId, Long communityId, UserDTO userDTO) {
         return userService.createNewResident(companyId, communityId, userDTO);
+    }
+
+    @Override
+    public List<HouseDTO> createNewHouses(String companyId, Long communityId, List<HouseDTO> houseDTOList) {
+        return houseService.createHousesInBulk(companyId, communityId, houseDTOList);
     }
 
     public CommunityDTO getCommunity(String companyId, Long communityId) {

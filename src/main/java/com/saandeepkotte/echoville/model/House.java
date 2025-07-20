@@ -36,6 +36,10 @@ public class House extends BaseEntity<House, HouseDTO> {
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL)
     private List<Bill> bills = new ArrayList<>();
 
+    public House(HouseDTO houseDTO) {
+        this.toModel(houseDTO);
+    }
+
     public HouseDTO toDto() {
         HouseDTO houseDTO = new HouseDTO();
         houseDTO.setId(id);
@@ -56,6 +60,11 @@ public class House extends BaseEntity<House, HouseDTO> {
         this.setFloor(houseDTO.getFloor());
         this.setBlock(houseDTO.getBlock());
         this.setType(houseDTO.getType());
+        if(houseDTO.getCommunityId() != null) {
+            Community community = new Community();
+            community.setId(houseDTO.getCommunityId());
+            this.setCommunity(community);
+        }
         return this;
     }
 }

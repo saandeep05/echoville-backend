@@ -2,6 +2,7 @@ package com.saandeepkotte.echoville.service;
 
 import com.saandeepkotte.echoville.dto.CommunityDTO;
 import com.saandeepkotte.echoville.dto.EntityDTO;
+import com.saandeepkotte.echoville.dto.HouseDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
@@ -19,4 +20,6 @@ public interface CommunityService extends BaseService<Community> {
     List<UserDTO> getResidents(String companyId, Long communityId);
 
     UserDTO createNewResident(String companyId, Long communityId, @Valid UserDTO userDTO);
+
+    List<HouseDTO> createNewHouses(String companyId, Long communityId, @Valid List<HouseDTO> houseDTOList);
 }
