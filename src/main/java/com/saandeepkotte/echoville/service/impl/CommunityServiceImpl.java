@@ -2,12 +2,16 @@ package com.saandeepkotte.echoville.service.impl;
 
 import com.saandeepkotte.echoville.dto.CommunityDTO;
 import com.saandeepkotte.echoville.dto.EntityDTO;
+import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
 import com.saandeepkotte.echoville.model.Company;
+import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.repository.CommunityRepository;
 import com.saandeepkotte.echoville.service.CommunityService;
 import com.saandeepkotte.echoville.service.OnboardingService;
+import com.saandeepkotte.echoville.service.ValidationHelperService;
+import com.saandeepkotte.echoville.utils.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,8 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community, Long> imple
     private OnboardingService onboardingService;
     @Autowired
     private CommunityRepository communityRepository;
+    @Autowired
+    private ValidationHelperService validationHelperService;
 
     @Override
     public CommunityDTO createNewCommunity(CommunityDTO communityDTO) throws EchoException {
@@ -56,6 +62,16 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community, Long> imple
     public List<CommunityDTO> getCommunitiesByCompanyId(String companyId) {
         List<Community> communities = communityRepository.findByCompanyId(companyId);
         return communities.stream().map(Community::toDto).toList();
+    }
+
+    @Override
+    public List<UserDTO> getResidents(String companyId, Long communityId) {
+        if(!validationHelperService.isValidCommunity(companyId, communityId)) {
+            throw new EchoException("Invalid community");
+        }
+        Community community = communityRepository.findByIdAndCompanyId(communityId, companyId);
+        List<EchoUser> users = community.getUsers().stream().filter(user -> user.getRole() == UserRole.RESIDENT).toList();
+        return users.stream().map(EchoUser::toDto).toList();
     }
 
     public CommunityDTO getCommunity(String companyId, Long communityId) {

@@ -2,6 +2,7 @@ package com.saandeepkotte.echoville.service;
 
 import com.saandeepkotte.echoville.dto.CommunityDTO;
 import com.saandeepkotte.echoville.dto.EntityDTO;
+import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
 
@@ -13,4 +14,6 @@ public interface CommunityService extends BaseService<Community> {
     List<CommunityDTO> getAllCommunities(String companyId, Long communityId);
 
     List<CommunityDTO> getCommunitiesByCompanyId(String companyId);
+
+    List<UserDTO> getResidents(String companyId, Long communityId);
 }
