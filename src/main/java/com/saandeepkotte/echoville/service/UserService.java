@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface UserService extends BaseService<EchoUser> {
     UserDTO createAdmin(UserDTO userDTO, String companyId, Optional<Long> communityId) throws EchoException;
+
+    UserDTO createNewResident(String companyId, Long communityId, UserDTO userDTO);
 }

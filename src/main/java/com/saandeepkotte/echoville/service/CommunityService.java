@@ -5,6 +5,7 @@ import com.saandeepkotte.echoville.dto.EntityDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface CommunityService extends BaseService<Community> {
     List<CommunityDTO> getCommunitiesByCompanyId(String companyId);
 
     List<UserDTO> getResidents(String companyId, Long communityId);
+
+    UserDTO createNewResident(String companyId, Long communityId, @Valid UserDTO userDTO);
 }

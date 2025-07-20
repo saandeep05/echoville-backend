@@ -59,4 +59,18 @@ public class CommunityController {
         }
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
+
+    @PostMapping(RequestPathURLs.COMMUNITY_RESIDENTS)
+    public ResponseEntity<EntityDTO<UserDTO>> createResident(@RequestHeader("companyId") String companyId,
+                                                             @PathVariable("communityId") Long communityId,
+                                                             @Valid @RequestBody UserDTO userDTO) {
+        EntityDTO<UserDTO> entityDTO = null;
+        try {
+            UserDTO createdUserDTO = communityService.createNewResident(companyId, communityId, userDTO);
+            entityDTO = RestControllerHelper.getResponseEntity(createdUserDTO, null);
+        } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
 }

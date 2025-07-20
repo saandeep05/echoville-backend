@@ -8,8 +8,10 @@ import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.repository.EchoUserRepository;
 import com.saandeepkotte.echoville.service.OnboardingService;
 import com.saandeepkotte.echoville.service.UserService;
+import com.saandeepkotte.echoville.service.ValidationHelperService;
 import com.saandeepkotte.echoville.utils.enums.UserRole;
 import jakarta.transaction.Transactional;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
     private EchoUserRepository userRepository;
     @Autowired
     private OnboardingService onboardingService;
+    @Autowired
+    private ValidationHelperService validationHelperService;
 
     @Override
     @Transactional
@@ -42,6 +46,20 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
             user.setCommunity(community);
             user.setRole(UserRole.COMMUNITY_ADMIN);
         }
+        user = this.saveUser(user);
+        return user.toDto();
+    }
+
+    @Override
+    public UserDTO createNewResident(String companyId, Long communityId, UserDTO userDTO) {
+        Pair<Boolean, String> validation = validationHelperService.isValidUserOfCommunity(companyId, communityId, userDTO);
+        if(!validation.getKey()) {
+            throw new EchoException(validation.getValue());
+        }
+        userDTO.setCompanyId(companyId);
+        userDTO.setCommunityId(communityId);
+        userDTO.setRole(UserRole.RESIDENT);
+        EchoUser user = new EchoUser(userDTO);
         user = this.saveUser(user);
         return user.toDto();
     }

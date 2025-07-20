@@ -49,6 +49,10 @@ public class EchoUser extends BaseEntity<EchoUser, UserDTO> {
     @OneToMany(mappedBy = "raisedBy")
     private List<Issue> issues = new ArrayList<>();
 
+    public EchoUser(UserDTO userDTO) {
+        this.toModel(userDTO);
+    }
+
     @Override
     public UserDTO toDto() {
         UserDTO userDTO = new UserDTO();
@@ -77,6 +81,17 @@ public class EchoUser extends BaseEntity<EchoUser, UserDTO> {
         this.setPhone(userDTO.getPhone());
         this.setFirstName(userDTO.getFirstName());
         this.setLastName(userDTO.getLastName());
+        this.setRole(userDTO.getRole());
+        if(userDTO.getCompanyId() != null) {
+            Company company = new Company();
+            company.setId(userDTO.getCompanyId());
+            this.company = company;
+        }
+        if(userDTO.getCommunityId() != null) {
+            Community community = new Community();
+            community.setId(userDTO.getCommunityId());
+            this.community = community;
+        }
         return this;
     }
 }

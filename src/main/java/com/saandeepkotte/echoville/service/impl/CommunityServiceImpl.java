@@ -10,6 +10,7 @@ import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.repository.CommunityRepository;
 import com.saandeepkotte.echoville.service.CommunityService;
 import com.saandeepkotte.echoville.service.OnboardingService;
+import com.saandeepkotte.echoville.service.UserService;
 import com.saandeepkotte.echoville.service.ValidationHelperService;
 import com.saandeepkotte.echoville.utils.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community, Long> imple
     private CommunityRepository communityRepository;
     @Autowired
     private ValidationHelperService validationHelperService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public CommunityDTO createNewCommunity(CommunityDTO communityDTO) throws EchoException {
@@ -72,6 +75,11 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community, Long> imple
         Community community = communityRepository.findByIdAndCompanyId(communityId, companyId);
         List<EchoUser> users = community.getUsers().stream().filter(user -> user.getRole() == UserRole.RESIDENT).toList();
         return users.stream().map(EchoUser::toDto).toList();
+    }
+
+    @Override
+    public UserDTO createNewResident(String companyId, Long communityId, UserDTO userDTO) {
+        return userService.createNewResident(companyId, communityId, userDTO);
     }
 
     public CommunityDTO getCommunity(String companyId, Long communityId) {
