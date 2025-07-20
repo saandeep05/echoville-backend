@@ -5,6 +5,7 @@ import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
 import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.EchoUser;
+import com.saandeepkotte.echoville.model.House;
 import com.saandeepkotte.echoville.repository.EchoUserRepository;
 import com.saandeepkotte.echoville.service.OnboardingService;
 import com.saandeepkotte.echoville.service.UserService;
@@ -60,6 +61,27 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
         userDTO.setCommunityId(communityId);
         userDTO.setRole(UserRole.RESIDENT);
         EchoUser user = new EchoUser(userDTO);
+        user = this.saveUser(user);
+        return user.toDto();
+    }
+
+    @Override
+    public UserDTO assignHouseToResident(String companyId, Long communityId, Long userId, Long houseId) {
+        Pair<Boolean, String> validation = validationHelperService.isValidUserOfCommunity(companyId, communityId, userId);
+        if(!validation.getKey()) {
+            throw new EchoException(validation.getValue());
+        }
+        validation = validationHelperService.isValidHouseOfCommunity(companyId, communityId, houseId);
+        if(!validation.getKey()) {
+            throw new EchoException(validation.getValue());
+        }
+        EchoUser user = userRepository.findById(userId).get();
+        if(user.getRole() != UserRole.RESIDENT) {
+            throw new EchoException("User is not a resident");
+        }
+        House house = new House();
+        house.setId(houseId);
+        user.setHouse(house);
         user = this.saveUser(user);
         return user.toDto();
     }

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,6 +28,21 @@ public class UserController {
             UserDTO user = userService.createAdmin(userDTO, companyId, communityId);
             entityDTO = RestControllerHelper.getResponseEntity(user, "");
         } catch(EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @PostMapping(RequestPathURLs.ASSIGN_HOUSE)
+    public ResponseEntity<EntityDTO<UserDTO>> assignHouse(@RequestHeader("companyId") String companyId,
+                                                          @RequestHeader("communityId") Long communityId,
+                                                          @PathVariable("userId") Long userId,
+                                                          @PathVariable("houseId") Long houseId) {
+        EntityDTO<UserDTO> entityDTO = null;
+        try {
+            UserDTO userDTO = userService.assignHouseToResident(companyId, communityId, userId, houseId);
+            entityDTO = RestControllerHelper.getResponseEntity(userDTO, null);
+        } catch (EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
         }
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);

@@ -8,5 +8,7 @@ public interface ValidationHelperService {
     boolean isValidCompany(String companyId);
     boolean isValidCommunity(String companyId, Long communityId);
     Pair<Boolean, String> isValidUserOfCommunity(String companyId, Long communityId, UserDTO userDTO);
+    Pair<Boolean, String> isValidUserOfCommunity(String companyId, Long communityId, Long userId);
     Pair<Boolean, String> isValidHouseOfCommunity(String companyId, Long communityId, HouseDTO houseDTO);
+    Pair<Boolean, String> isValidHouseOfCommunity(String companyId, Long communityId, Long houseId);
 }
