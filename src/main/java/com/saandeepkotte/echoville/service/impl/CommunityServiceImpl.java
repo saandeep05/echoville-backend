@@ -98,6 +98,9 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community, Long> imple
     }
 
     public CommunityDTO getCommunity(String companyId, Long communityId) {
+        if(validationHelperService.isValidCompany(companyId)) {
+            return null;
+        }
         Community community = communityRepository.findByIdAndCompanyId(communityId, companyId);
         return community != null ? community.toDto() : null;
     }

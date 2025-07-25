@@ -39,6 +39,9 @@ public class ValidationHelperServiceImpl implements ValidationHelperService {
 
     @Override
     public boolean isValidCommunity(String companyId, Long communityId) {
+        if(!isValidCompany(companyId)) {
+            return false;
+        }
         Community community = communityRepository.findByIdAndCompanyId(communityId, companyId);
         return community != null;
     }
