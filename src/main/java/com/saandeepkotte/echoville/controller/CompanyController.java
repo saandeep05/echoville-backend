@@ -58,4 +58,27 @@ public class CompanyController {
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
 
+    @PutMapping(RequestPathURLs.FOR_COMPANY_ID)
+    public ResponseEntity<EntityDTO<CompanyDTO>> editCompany(@Valid @RequestBody CompanyDTO companyDTO, @PathVariable("companyId") String companyId) {
+        EntityDTO<CompanyDTO> entityDTO = null;
+        try {
+            CompanyDTO company = companyService.editCompany(companyId, companyDTO);
+            entityDTO = RestControllerHelper.getResponseEntity(company, null);
+        } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping(RequestPathURLs.FOR_COMPANY_ID)
+    public ResponseEntity<EntityDTO<Boolean>> deleteCompany(@PathVariable("companyId") String companyId) {
+        EntityDTO<Boolean> entityDTO = null;
+        try {
+            Boolean isDeleted = companyService.deleteCompany(companyId, true);
+            entityDTO = RestControllerHelper.getResponseEntity(isDeleted, isDeleted ? "success" : "failed");
+        } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(false, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
 }
