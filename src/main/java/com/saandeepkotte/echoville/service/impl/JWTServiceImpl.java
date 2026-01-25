@@ -54,7 +54,7 @@ public class JWTServiceImpl implements JWTService {
     @Override
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return isTokenExpired(token) && username.equals(userDetails.getUsername());
+        return !isTokenExpired(token) && username.equals(userDetails.getUsername());
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
