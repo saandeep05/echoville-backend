@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/community/").hasRole(UserRole.COMPANY_ADMIN.name())
                         .requestMatchers("/community/**").hasAnyRole(UserRole.COMMUNITY_ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/bill/").hasRole(UserRole.COMMUNITY_ADMIN.name())
-                        .requestMatchers("/**").hasRole(UserRole.RESIDENT.name())
+                        .requestMatchers("/**").hasAnyRole(UserRole.RESIDENT.name(), UserRole.COMMUNITY_ADMIN.name(), UserRole.COMPANY_ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
