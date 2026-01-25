@@ -11,4 +11,5 @@ public interface ValidationHelperService {
     Pair<Boolean, String> isValidUserOfCommunity(String companyId, Long communityId, Long userId);
     Pair<Boolean, String> isValidHouseOfCommunity(String companyId, Long communityId, HouseDTO houseDTO);
     Pair<Boolean, String> isValidHouseOfCommunity(String companyId, Long communityId, Long houseId);
+    Pair<Boolean, Object> isValidBillOfHouse(String companyId, Long communityId, Long houseId, Long billId);
 }

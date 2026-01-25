@@ -9,4 +9,5 @@ public class RequestPathURLs {
     public static final String ASSIGN_HOUSE = "/{userId}/house/{houseId}";
     public static final String HOUSE_BILL = "/{houseId}/bill";
     public static final String LOGIN = "/login";
+    public static final String BILL = "/{billId}";
 }

@@ -3,14 +3,8 @@ package com.saandeepkotte.echoville.service.impl;
 import com.saandeepkotte.echoville.dto.HouseDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
-import com.saandeepkotte.echoville.model.Community;
-import com.saandeepkotte.echoville.model.Company;
-import com.saandeepkotte.echoville.model.EchoUser;
-import com.saandeepkotte.echoville.model.House;
-import com.saandeepkotte.echoville.repository.CommunityRepository;
-import com.saandeepkotte.echoville.repository.CompanyRepository;
-import com.saandeepkotte.echoville.repository.EchoUserRepository;
-import com.saandeepkotte.echoville.repository.HouseRepository;
+import com.saandeepkotte.echoville.model.*;
+import com.saandeepkotte.echoville.repository.*;
 import com.saandeepkotte.echoville.service.ValidationHelperService;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +24,8 @@ public class ValidationHelperServiceImpl implements ValidationHelperService {
     private EchoUserRepository userRepository;
     @Autowired
     private HouseRepository houseRepository;
+    @Autowired
+    private BillRepository billRepository;
 
     @Override
     public boolean isValidCompany(String companyId) {
@@ -90,5 +86,23 @@ public class ValidationHelperServiceImpl implements ValidationHelperService {
             return new Pair<>(true, "");
         }
         return new Pair<>(false, "Given user not present in the community");
+    }
+
+    @Override
+    public Pair<Boolean, Object> isValidBillOfHouse(String companyId, Long communityId, Long houseId, Long billId) {
+        if(billId == null) {
+            return new Pair<>(false, "Bill id cannot be null");
+        }
+        Pair<Boolean, String> preValidation = isValidHouseOfCommunity(companyId, communityId, houseId);
+        if(!preValidation.getKey()) {
+            return new Pair<>(preValidation.getKey(), preValidation.getValue());
+        }
+        Bill bill = billRepository.findById(billId).orElse(null);
+        if(bill == null) {
+            return new Pair<>(false, "Bill not found");
+        } else if(!bill.getHouse().getId().equals(houseId)) {
+            return new Pair<>(false, "Bill is not associated with the given house");
+        }
+        return new Pair<>(true, bill);
     }
 }
