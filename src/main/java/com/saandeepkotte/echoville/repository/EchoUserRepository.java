@@ -17,4 +17,6 @@ public interface EchoUserRepository extends BaseRepository<EchoUser, Long> {
     Integer getAdminCount(@Param("email") String email, @Param("communityId") Long communityId);
 
     List<EchoUser> findByEmailAndCommunityIdAndCompanyId(String email, Long communityId, String companyId);
+
+    List<EchoUser> findByEmail(String email);
 }
