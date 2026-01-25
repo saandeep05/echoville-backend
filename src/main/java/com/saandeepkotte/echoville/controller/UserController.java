@@ -2,6 +2,7 @@ package com.saandeepkotte.echoville.controller;
 
 import com.saandeepkotte.echoville.controller.helper.RestControllerHelper;
 import com.saandeepkotte.echoville.dto.EntityDTO;
+import com.saandeepkotte.echoville.dto.LoginDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.service.UserService;
@@ -43,6 +44,19 @@ public class UserController {
             UserDTO userDTO = userService.assignHouseToResident(companyId, communityId, userId, houseId);
             entityDTO = RestControllerHelper.getResponseEntity(userDTO, null);
         } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @PostMapping(RequestPathURLs.LOGIN)
+    public ResponseEntity<EntityDTO<Object>> login(@RequestHeader("companyId") String companyId,
+                                                   @RequestBody LoginDTO loginDTO) {
+        EntityDTO<Object> entityDTO = null;
+        try {
+            String token = userService.verifyUser(companyId, loginDTO);
+            entityDTO = RestControllerHelper.getResponseEntity(token, null);
+        } catch(EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
         }
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);

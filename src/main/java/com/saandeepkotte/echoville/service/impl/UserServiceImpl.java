@@ -1,5 +1,6 @@
 package com.saandeepkotte.echoville.service.impl;
 
+import com.saandeepkotte.echoville.dto.LoginDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Community;
@@ -7,6 +8,7 @@ import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.model.House;
 import com.saandeepkotte.echoville.repository.EchoUserRepository;
+import com.saandeepkotte.echoville.service.JWTService;
 import com.saandeepkotte.echoville.service.OnboardingService;
 import com.saandeepkotte.echoville.service.UserService;
 import com.saandeepkotte.echoville.service.ValidationHelperService;
@@ -14,8 +16,14 @@ import com.saandeepkotte.echoville.utils.enums.UserRole;
 import jakarta.transaction.Transactional;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +34,13 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
     private OnboardingService onboardingService;
     @Autowired
     private ValidationHelperService validationHelperService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Override
     @Transactional
@@ -86,8 +101,24 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
         return user.toDto();
     }
 
+    @Override
+    public EchoUser getUserWithEmail(String email) {
+        List<EchoUser> users = userRepository.findByEmail(email);
+        return users.get(0);
+    }
+
+    @Override
+    public String verifyUser(String companyId, LoginDTO loginDTO) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+        if(authentication.isAuthenticated()) {
+            return jwtService.generateToken(loginDTO.getEmail());
+        }
+        throw new EchoException("Authentication failed!");
+    }
+
     private EchoUser saveUser(EchoUser user) {
-        // impl: space left for implementing password encoding
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return userRepository.save(user);
     }
 
