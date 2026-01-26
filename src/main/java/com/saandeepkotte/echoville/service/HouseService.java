@@ -10,4 +10,6 @@ public interface HouseService extends BaseService<House> {
     List<HouseDTO> createHousesInBulk(String companyId, Long communityId, List<HouseDTO> houseDTOList);
 
     List<BillDTO> getAllBillsForHouse(String companyId, Long communityId, Long houseId);
+
+    List<HouseDTO> getAllHousesOfCommunity(String companyId, Long communityId);
 }

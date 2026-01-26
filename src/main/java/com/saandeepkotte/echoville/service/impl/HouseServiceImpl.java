@@ -51,4 +51,13 @@ public class HouseServiceImpl extends BaseServiceImpl<House, Long> implements Ho
         Optional<House> house = houseRepository.findById(houseId);
         return house.map(value -> value.getBills().stream().map(Bill::toDto).toList()).orElse(new ArrayList<>());
     }
+
+    @Override
+    public List<HouseDTO> getAllHousesOfCommunity(String companyId, Long communityId) {
+        if(!validationHelperService.isValidCommunity(companyId, communityId)) {
+            throw new EchoException("Invalid community");
+        }
+        List<House> houses = houseRepository.findByCommunityId(communityId);
+        return houses.stream().map(House::toDto).toList();
+    }
 }

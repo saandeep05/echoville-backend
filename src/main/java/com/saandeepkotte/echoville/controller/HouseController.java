@@ -8,6 +8,7 @@ import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.House;
 import com.saandeepkotte.echoville.service.HouseService;
 import com.saandeepkotte.echoville.utils.urls.RequestPathURLs;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,33 @@ public class HouseController {
         try {
             List<BillDTO> billDTOList = houseService.getAllBillsForHouse(companyId, communityId, houseId);
             entityDTO = RestControllerHelper.getResponseEntity(billDTOList, null);
+        } catch(EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @PostMapping(RequestPathURLs.COMMUNITY_HOUSES)
+    public ResponseEntity<EntityDTO<List<HouseDTO>>> createHouses(@RequestHeader("companyId") String companyId,
+                                                                  @PathVariable("communityId") Long communityId,
+                                                                  @Valid @RequestBody List<HouseDTO> houseDTOList) {
+        EntityDTO<List<HouseDTO>> entityDTO = null;
+        try {
+            houseDTOList = houseService.createHousesInBulk(companyId, communityId, houseDTOList);
+            entityDTO = RestControllerHelper.getResponseEntity(houseDTOList, null);
+        } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(RequestPathURLs.COMMUNITY_HOUSES)
+    public ResponseEntity<EntityDTO<List<HouseDTO>>> getAllHouses(@RequestHeader("companyId") String companyId,
+                                                                  @PathVariable("communityId") Long communityId) {
+        EntityDTO<List<HouseDTO>> entityDTO = null;
+        try {
+            List<HouseDTO> houseDTOList = houseService.getAllHousesOfCommunity(companyId, communityId);
+            entityDTO = RestControllerHelper.getResponseEntity(houseDTOList, null);
         } catch(EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
         }
