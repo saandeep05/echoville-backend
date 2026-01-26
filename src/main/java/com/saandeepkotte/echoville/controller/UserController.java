@@ -68,7 +68,7 @@ public class  UserController {
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
 
-    @GetMapping(RequestPathURLs.COMMUNITY_RESIDENTS)
+    @GetMapping(RequestPathURLs.FOR_COMMUNITY)
     public ResponseEntity<EntityDTO<List<UserDTO>>> getAllResidents(@RequestHeader("companyId") String companyId,
                                                                     @PathVariable("communityId") Long communityId) {
         EntityDTO<List<UserDTO>> entityDTO = null;
@@ -81,7 +81,7 @@ public class  UserController {
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
 
-    @PostMapping(RequestPathURLs.COMMUNITY_RESIDENTS)
+    @PostMapping(RequestPathURLs.FOR_COMMUNITY)
     public ResponseEntity<EntityDTO<UserDTO>> createResident(@RequestHeader("companyId") String companyId,
                                                              @PathVariable("communityId") Long communityId,
                                                              @Valid @RequestBody UserDTO userDTO) {

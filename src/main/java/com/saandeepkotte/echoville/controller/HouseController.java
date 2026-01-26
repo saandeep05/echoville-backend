@@ -36,7 +36,7 @@ public class HouseController {
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
 
-    @PostMapping(RequestPathURLs.COMMUNITY_HOUSES)
+    @PostMapping(RequestPathURLs.FOR_COMMUNITY)
     public ResponseEntity<EntityDTO<List<HouseDTO>>> createHouses(@RequestHeader("companyId") String companyId,
                                                                   @PathVariable("communityId") Long communityId,
                                                                   @Valid @RequestBody List<HouseDTO> houseDTOList) {
@@ -50,7 +50,7 @@ public class HouseController {
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
 
-    @GetMapping(RequestPathURLs.COMMUNITY_HOUSES)
+    @GetMapping(RequestPathURLs.FOR_COMMUNITY)
     public ResponseEntity<EntityDTO<List<HouseDTO>>> getAllHouses(@RequestHeader("companyId") String companyId,
                                                                   @PathVariable("communityId") Long communityId) {
         EntityDTO<List<HouseDTO>> entityDTO = null;
