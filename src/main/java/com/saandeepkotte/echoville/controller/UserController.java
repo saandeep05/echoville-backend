@@ -3,6 +3,7 @@ package com.saandeepkotte.echoville.controller;
 import com.saandeepkotte.echoville.controller.helper.RestControllerHelper;
 import com.saandeepkotte.echoville.dto.EntityDTO;
 import com.saandeepkotte.echoville.dto.LoginDTO;
+import com.saandeepkotte.echoville.dto.LoginResponseDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.service.UserService;
@@ -23,11 +24,14 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = {RequestPathURLs.CREATE_ADMIN, RequestPathURLs.CREATE_ADMIN + "/{communityId}"})
-    public ResponseEntity<EntityDTO<UserDTO>> createAdmin(@Valid @RequestBody UserDTO userDTO, @PathVariable("companyId") String companyId, @PathVariable("communityId") Optional<Long> communityId) {
-        EntityDTO<UserDTO> entityDTO = null;
+    public ResponseEntity<EntityDTO<LoginResponseDTO>> createAdmin(@Valid @RequestBody UserDTO userDTO, @PathVariable("companyId") String companyId, @PathVariable("communityId") Optional<Long> communityId) {
+        EntityDTO<LoginResponseDTO> entityDTO = null;
         try {
             UserDTO user = userService.createAdmin(userDTO, companyId, communityId);
-            entityDTO = RestControllerHelper.getResponseEntity(user, "");
+            LoginDTO loginDTO = new LoginDTO(userDTO.getEmail(), userDTO.getPassword());
+            String token = userService.verifyUser(companyId, loginDTO);
+            LoginResponseDTO loginResponseDTO = new LoginResponseDTO(user, token);
+            entityDTO = RestControllerHelper.getResponseEntity(loginResponseDTO, "");
         } catch(EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
         }
@@ -50,12 +54,14 @@ public class UserController {
     }
 
     @PostMapping(RequestPathURLs.LOGIN)
-    public ResponseEntity<EntityDTO<Object>> login(@RequestHeader("companyId") String companyId,
+    public ResponseEntity<EntityDTO<LoginResponseDTO>> login(@RequestHeader("companyId") String companyId,
                                                    @RequestBody LoginDTO loginDTO) {
-        EntityDTO<Object> entityDTO = null;
+        EntityDTO<LoginResponseDTO> entityDTO = null;
         try {
             String token = userService.verifyUser(companyId, loginDTO);
-            entityDTO = RestControllerHelper.getResponseEntity(token, null);
+            UserDTO userDTO = userService.getUserWithEmail(loginDTO.getEmail());
+            LoginResponseDTO loginResponseDTO = new LoginResponseDTO(userDTO, token);
+            entityDTO = RestControllerHelper.getResponseEntity(loginResponseDTO, null);
         } catch(EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
         }

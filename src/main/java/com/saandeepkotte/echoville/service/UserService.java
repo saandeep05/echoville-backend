@@ -15,7 +15,7 @@ public interface UserService extends BaseService<EchoUser> {
 
     UserDTO assignHouseToResident(String companyId, Long communityId, Long userId, Long houseId);
 
-    EchoUser getUserWithEmail(String email);
+    UserDTO getUserWithEmail(String email);
 
     String verifyUser(String companyId, LoginDTO loginDTO);
 }

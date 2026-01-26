@@ -102,9 +102,9 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
     }
 
     @Override
-    public EchoUser getUserWithEmail(String email) {
+    public UserDTO getUserWithEmail(String email) {
         List<EchoUser> users = userRepository.findByEmail(email);
-        return users.get(0);
+        return users.get(0).toDto();
     }
 
     @Override
