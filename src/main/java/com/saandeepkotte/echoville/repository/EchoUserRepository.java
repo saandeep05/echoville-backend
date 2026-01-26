@@ -1,6 +1,7 @@
 package com.saandeepkotte.echoville.repository;
 
 import com.saandeepkotte.echoville.model.EchoUser;
+import com.saandeepkotte.echoville.utils.enums.UserRole;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +20,6 @@ public interface EchoUserRepository extends BaseRepository<EchoUser, Long> {
     List<EchoUser> findByEmailAndCommunityIdAndCompanyId(String email, Long communityId, String companyId);
 
     List<EchoUser> findByEmail(String email);
+
+    List<EchoUser> findByCommunityIdAndRole(Long communityId, UserRole role);
 }

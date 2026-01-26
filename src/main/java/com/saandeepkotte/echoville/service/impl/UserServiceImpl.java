@@ -116,6 +116,15 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
         throw new EchoException("Authentication failed!");
     }
 
+    @Override
+    public List<UserDTO> getResidents(String companyId, Long communityId) {
+        if(!validationHelperService.isValidCommunity(companyId, communityId)) {
+            throw new EchoException("Invalid community id");
+        }
+        List<EchoUser> users = userRepository.findByCommunityIdAndRole(communityId, UserRole.RESIDENT);
+        return users.stream().map(EchoUser::toDto).toList();
+    }
+
     private EchoUser saveUser(EchoUser user) {
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);

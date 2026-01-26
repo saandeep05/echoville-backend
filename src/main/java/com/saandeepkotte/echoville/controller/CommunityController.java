@@ -48,33 +48,6 @@ public class CommunityController {
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
 
-    @GetMapping(RequestPathURLs.COMMUNITY_RESIDENTS)
-    public ResponseEntity<EntityDTO<List<UserDTO>>> getAllResidents(@RequestHeader("companyId") String companyId,
-                                                                    @PathVariable("communityId") Long communityId) {
-        EntityDTO<List<UserDTO>> entityDTO = null;
-        try {
-            List<UserDTO> userDTOList = communityService.getResidents(companyId, communityId);
-            entityDTO = RestControllerHelper.getResponseEntity(userDTOList, null);
-        } catch(EchoException e) {
-            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
-        }
-        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
-    }
-
-    @PostMapping(RequestPathURLs.COMMUNITY_RESIDENTS)
-    public ResponseEntity<EntityDTO<UserDTO>> createResident(@RequestHeader("companyId") String companyId,
-                                                             @PathVariable("communityId") Long communityId,
-                                                             @Valid @RequestBody UserDTO userDTO) {
-        EntityDTO<UserDTO> entityDTO = null;
-        try {
-            UserDTO createdUserDTO = communityService.createNewResident(companyId, communityId, userDTO);
-            entityDTO = RestControllerHelper.getResponseEntity(createdUserDTO, null);
-        } catch (EchoException e) {
-            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
-        }
-        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
-    }
-
     @PostMapping(RequestPathURLs.COMMUNITY_HOUSES)
     public ResponseEntity<EntityDTO<List<HouseDTO>>> createHouses(@RequestHeader("companyId") String companyId,
                                                            @PathVariable("communityId") Long communityId,

@@ -6,6 +6,7 @@ import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.EchoUser;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService extends BaseService<EchoUser> {
@@ -18,4 +19,6 @@ public interface UserService extends BaseService<EchoUser> {
     UserDTO getUserWithEmail(String email);
 
     String verifyUser(String companyId, LoginDTO loginDTO);
+
+    List<UserDTO> getResidents(String companyId, Long communityId);
 }
