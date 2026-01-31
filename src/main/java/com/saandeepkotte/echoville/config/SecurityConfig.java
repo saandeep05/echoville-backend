@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/company/").denyAll()
                         .requestMatchers("/company/**").hasRole(UserRole.COMPANY_ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/community/").hasRole(UserRole.COMPANY_ADMIN.name())
-                        .requestMatchers("/community/**").hasAnyRole(UserRole.COMMUNITY_ADMIN.name())
+                        .requestMatchers("/community/**").hasAnyRole(UserRole.COMMUNITY_ADMIN.name(), UserRole.COMPANY_ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/bill/").hasRole(UserRole.COMMUNITY_ADMIN.name())
                         .requestMatchers("/**").hasAnyRole(UserRole.RESIDENT.name(), UserRole.COMMUNITY_ADMIN.name(), UserRole.COMPANY_ADMIN.name())
                         .anyRequest().authenticated()
