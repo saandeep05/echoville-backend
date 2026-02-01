@@ -31,4 +31,5 @@ public class BillDTO {
     private String description;
     @Enumerated(EnumType.STRING)
     private BillStatus status;
+    private HouseDTO houseDTO;
 }

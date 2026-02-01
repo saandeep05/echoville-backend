@@ -8,6 +8,7 @@ import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.House;
 import com.saandeepkotte.echoville.repository.BillRepository;
 import com.saandeepkotte.echoville.service.BillService;
+import com.saandeepkotte.echoville.service.HouseService;
 import com.saandeepkotte.echoville.service.ValidationHelperService;
 import com.saandeepkotte.echoville.utils.enums.BillStatus;
 import javafx.util.Pair;
@@ -23,6 +24,8 @@ public class BillServiceImpl extends BaseServiceImpl<Bill, Long> implements Bill
     private BillRepository billRepository;
     @Autowired
     private ValidationHelperService validationHelperService;
+    @Autowired
+    private HouseService houseService;
 
     @Override
     public BillDTO createNewBill(String companyId, BillDTO billDTO) {
@@ -32,6 +35,8 @@ public class BillServiceImpl extends BaseServiceImpl<Bill, Long> implements Bill
         }
         billDTO.setStatus(BillStatus.UNPAID);
         Bill bill = new Bill(billDTO);
+        House house = houseService.getHouse(bill.getHouse().getId());
+        bill.setHouse(house);
         bill = billRepository.save(bill);
         return bill.toDto();
     }

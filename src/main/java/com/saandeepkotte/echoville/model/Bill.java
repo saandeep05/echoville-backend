@@ -54,6 +54,7 @@ public class Bill extends BaseEntity<Bill, BillDTO> {
         billDTO.setCommunityId(community.getId());
         billDTO.setTitle(title);
         billDTO.setDescription(description);
+        billDTO.setHouseDTO(house.toDto());
         return billDTO;
     }
 
