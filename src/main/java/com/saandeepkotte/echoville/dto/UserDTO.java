@@ -25,7 +25,7 @@ public class UserDTO {
     private String phone;
     private String companyId;
     private Long communityId;
-    private Long houseId;
+    private HouseDTO houseDTO;
     private List<Long> issueIds;
     private List<Long> postId;
     private UserRole role;

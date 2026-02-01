@@ -65,7 +65,7 @@ public class EchoUser extends BaseEntity<EchoUser, UserDTO> {
         userDTO.setLastName(lastName);
         userDTO.setCompanyId(company != null ? company.getId() : null);
         userDTO.setCommunityId(community != null ? community.getId() : null);
-        userDTO.setHouseId(house != null ? house.getId() : null);
+        userDTO.setHouseDTO(house != null ? house.toDto() : null);
         userDTO.setIssueIds(issues.stream().map(Issue::getId).toList());
         userDTO.setPostId(posts.stream().map(Post::getId).toList());
         userDTO.setRole(role);
