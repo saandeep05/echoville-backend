@@ -12,4 +12,6 @@ public interface HouseService extends BaseService<House> {
     List<BillDTO> getAllBillsForHouse(String companyId, Long communityId, Long houseId);
 
     List<HouseDTO> getAllHousesOfCommunity(String companyId, Long communityId);
+
+    House getHouse(Long houseId);
 }

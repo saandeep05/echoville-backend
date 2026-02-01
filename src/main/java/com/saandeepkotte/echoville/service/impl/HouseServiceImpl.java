@@ -60,4 +60,9 @@ public class HouseServiceImpl extends BaseServiceImpl<House, Long> implements Ho
         List<House> houses = houseRepository.findByCommunityId(communityId);
         return houses.stream().map(House::toDto).toList();
     }
+
+    @Override
+    public House getHouse(Long houseId) {
+        return houseRepository.findById(houseId).orElse(null);
+    }
 }

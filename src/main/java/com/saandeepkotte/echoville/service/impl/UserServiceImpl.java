@@ -8,10 +8,7 @@ import com.saandeepkotte.echoville.model.Company;
 import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.model.House;
 import com.saandeepkotte.echoville.repository.EchoUserRepository;
-import com.saandeepkotte.echoville.service.JWTService;
-import com.saandeepkotte.echoville.service.OnboardingService;
-import com.saandeepkotte.echoville.service.UserService;
-import com.saandeepkotte.echoville.service.ValidationHelperService;
+import com.saandeepkotte.echoville.service.*;
 import com.saandeepkotte.echoville.utils.enums.UserRole;
 import jakarta.transaction.Transactional;
 import javafx.util.Pair;
@@ -38,6 +35,8 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
     private AuthenticationManager authenticationManager;
     @Autowired
     private JWTService jwtService;
+    @Autowired
+    private HouseService houseService;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -94,8 +93,10 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
         if(user.getRole() != UserRole.RESIDENT) {
             throw new EchoException("User is not a resident");
         }
-        House house = new House();
-        house.setId(houseId);
+        House house = houseService.getHouse(houseId);
+        if(house == null) {
+            throw new EchoException("House not found");
+        }
         user.setHouse(house);
         user = this.saveUser(user);
         return user.toDto();
