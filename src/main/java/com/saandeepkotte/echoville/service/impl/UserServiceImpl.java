@@ -1,5 +1,6 @@
 package com.saandeepkotte.echoville.service.impl;
 
+import com.saandeepkotte.echoville.dto.HouseDTO;
 import com.saandeepkotte.echoville.dto.LoginDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
@@ -124,6 +125,16 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
         }
         List<EchoUser> users = userRepository.findByCommunityIdAndRole(communityId, UserRole.RESIDENT);
         return users.stream().map(EchoUser::toDto).toList();
+    }
+
+    @Override
+    public HouseDTO getHouse(String companyId, Long communityId, Long userId) {
+        validationHelperService.runUserCommunityValidation(companyId, communityId, userId);
+        EchoUser user = userRepository.findById(userId).orElse(null);
+        if(user == null) {
+            throw new EchoException("User not found");
+        }
+        return user.getHouse().toDto();
     }
 
     private EchoUser saveUser(EchoUser user) {

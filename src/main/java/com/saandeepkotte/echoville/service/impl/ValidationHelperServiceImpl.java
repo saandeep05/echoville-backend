@@ -105,4 +105,12 @@ public class ValidationHelperServiceImpl implements ValidationHelperService {
         }
         return new Pair<>(true, bill);
     }
+
+    @Override
+    public void runUserCommunityValidation(String companyId, Long communityId, Long userId) {
+        Pair<Boolean, String> validation = isValidUserOfCommunity(companyId, communityId, userId);
+        if(!validation.getKey()) {
+            throw new EchoException(validation.getValue());
+        }
+    }
 }

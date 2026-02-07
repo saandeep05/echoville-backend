@@ -1,10 +1,7 @@
 package com.saandeepkotte.echoville.controller;
 
 import com.saandeepkotte.echoville.controller.helper.RestControllerHelper;
-import com.saandeepkotte.echoville.dto.EntityDTO;
-import com.saandeepkotte.echoville.dto.LoginDTO;
-import com.saandeepkotte.echoville.dto.LoginResponseDTO;
-import com.saandeepkotte.echoville.dto.UserDTO;
+import com.saandeepkotte.echoville.dto.*;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.service.UserService;
 import com.saandeepkotte.echoville.utils.urls.RequestPathURLs;
@@ -89,6 +86,20 @@ public class  UserController {
         try {
             UserDTO createdUserDTO = userService.createNewResident(companyId, communityId, userDTO);
             entityDTO = RestControllerHelper.getResponseEntity(createdUserDTO, null);
+        } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(RequestPathURLs.USER_HOUSE)
+    public ResponseEntity<EntityDTO<UserDTO>> getUserHouse(@RequestHeader("companyId") String companyId,
+                                                             @RequestHeader("communityId") Long communityId,
+                                                             @PathVariable("userId") Long userId) {
+        EntityDTO<UserDTO> entityDTO = null;
+        try {
+            HouseDTO houseDTO = userService.getHouse(companyId, communityId, userId);
+            entityDTO = RestControllerHelper.getResponseEntity(houseDTO, null);
         } catch (EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
         }

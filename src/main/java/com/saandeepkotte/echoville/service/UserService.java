@@ -1,5 +1,6 @@
 package com.saandeepkotte.echoville.service;
 
+import com.saandeepkotte.echoville.dto.HouseDTO;
 import com.saandeepkotte.echoville.dto.LoginDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
@@ -21,4 +22,6 @@ public interface UserService extends BaseService<EchoUser> {
     String verifyUser(String companyId, LoginDTO loginDTO);
 
     List<UserDTO> getResidents(String companyId, Long communityId);
+
+    HouseDTO getHouse(String companyId, Long communityId, Long userId);
 }
