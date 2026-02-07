@@ -1,13 +1,11 @@
 package com.saandeepkotte.echoville.service.impl;
 
+import com.saandeepkotte.echoville.dto.BillDTO;
 import com.saandeepkotte.echoville.dto.HouseDTO;
 import com.saandeepkotte.echoville.dto.LoginDTO;
 import com.saandeepkotte.echoville.dto.UserDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
-import com.saandeepkotte.echoville.model.Community;
-import com.saandeepkotte.echoville.model.Company;
-import com.saandeepkotte.echoville.model.EchoUser;
-import com.saandeepkotte.echoville.model.House;
+import com.saandeepkotte.echoville.model.*;
 import com.saandeepkotte.echoville.repository.EchoUserRepository;
 import com.saandeepkotte.echoville.service.*;
 import com.saandeepkotte.echoville.utils.enums.UserRole;
@@ -135,6 +133,25 @@ public class UserServiceImpl extends BaseServiceImpl<EchoUser, Long> implements 
             throw new EchoException("User not found");
         }
         return user.getHouse().toDto();
+    }
+
+    @Override
+    public List<BillDTO> getUserBills(String companyId, Long communityId, Long userId) {
+        validationHelperService.runUserCommunityValidation(companyId, communityId, userId);
+        EchoUser user = getUser(userId);
+        List<Bill> bills = user.getHouse().getBills();
+        if(bills == null || bills.isEmpty()) {
+            throw new EchoException("No bills found");
+        }
+        return user.getHouse().getBills().stream().map(Bill::toDto).toList();
+    }
+
+    private EchoUser getUser(Long userId) {
+         EchoUser user = userRepository.findById(userId).orElse(null);
+         if(user == null) {
+             throw new EchoException("User not found");
+         }
+         return user;
     }
 
     private EchoUser saveUser(EchoUser user) {

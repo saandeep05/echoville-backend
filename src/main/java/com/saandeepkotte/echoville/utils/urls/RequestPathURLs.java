@@ -11,4 +11,5 @@ public class RequestPathURLs {
     public static final String BILL = "/{billId}";
     public static final String GET_HOUSE = "/{houseId}";
     public static final String USER_HOUSE = "/{userId}/house";
+    public static final String USER_BILLS = "{userId}/bills";
 }

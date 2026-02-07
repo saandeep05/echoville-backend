@@ -105,4 +105,18 @@ public class  UserController {
         }
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
+
+    @GetMapping(RequestPathURLs.USER_BILLS)
+    public ResponseEntity<EntityDTO<List<BillDTO>>> getUserBills(@RequestHeader("companyId") String companyId,
+                                                           @RequestHeader("communityId") Long communityId,
+                                                           @PathVariable("userId") Long userId) {
+        EntityDTO<List<BillDTO>> entityDTO = null;
+        try {
+            List<BillDTO> billDTO = userService.getUserBills(companyId, communityId, userId);
+            entityDTO = RestControllerHelper.getResponseEntity(billDTO, null);
+        } catch (EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
 }
