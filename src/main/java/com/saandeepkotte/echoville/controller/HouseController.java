@@ -62,4 +62,18 @@ public class HouseController {
         }
         return new ResponseEntity<>(entityDTO, HttpStatus.OK);
     }
+
+    @GetMapping(RequestPathURLs.GET_HOUSE)
+    public ResponseEntity<EntityDTO<HouseDTO>> getHouse(@RequestHeader("companyId") String companyId,
+                                                        @RequestHeader("communityId") Long communityId,
+                                                        @PathVariable("houseId") Long houseId) {
+        EntityDTO<HouseDTO> entityDTO = null;
+        try {
+            House house = houseService.getHouse(houseId);
+            entityDTO = RestControllerHelper.getResponseEntity(house.toDto(), null);
+        } catch(Exception e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
 }
