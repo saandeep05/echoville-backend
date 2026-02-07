@@ -113,4 +113,11 @@ public class ValidationHelperServiceImpl implements ValidationHelperService {
             throw new EchoException(validation.getValue());
         }
     }
+
+    @Override
+    public void runCommunityValidation(String companyId, Long communityId) {
+        if(!isValidCommunity(companyId, communityId)) {
+            throw new EchoException("Cannot find community");
+        }
+    }
 }
