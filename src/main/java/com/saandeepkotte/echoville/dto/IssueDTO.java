@@ -25,6 +25,6 @@ public class IssueDTO {
     @NotNull(message = "Community is required")
     private Long communityId;
     @NotNull(message = "Resident is required")
-    private Long residentId;
+    private UserDTO residentDTO;
     private LocalDateTime createdAt;
 }

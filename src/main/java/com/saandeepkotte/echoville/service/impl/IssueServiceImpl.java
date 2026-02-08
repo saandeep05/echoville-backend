@@ -42,7 +42,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue, Long> implements Is
 
     @Override
     public IssueDTO createNewIssue(String companyId, IssueDTO issueDTO) {
-        validationHelperService.runUserCommunityValidation(companyId, issueDTO.getCommunityId(), issueDTO.getResidentId());
+        validationHelperService.runUserCommunityValidation(companyId, issueDTO.getCommunityId(), issueDTO.getResidentDTO().getId());
         if(issueDTO.getStatus() == null) {
             issueDTO.setStatus(IssueStatus.OPEN);
         }

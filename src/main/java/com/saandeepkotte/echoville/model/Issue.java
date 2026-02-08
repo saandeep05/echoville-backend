@@ -40,7 +40,7 @@ public class Issue extends BaseEntity<Issue, IssueDTO> {
         issueDTO.setTitle(title);
         issueDTO.setDescription(description);
         issueDTO.setStatus(status);
-        issueDTO.setResidentId(raisedBy.getId());
+        issueDTO.setResidentDTO(raisedBy.toDto());
         issueDTO.setCommunityId(community.getId());
         issueDTO.setCreatedAt(createdAt);
         return issueDTO;
@@ -54,7 +54,7 @@ public class Issue extends BaseEntity<Issue, IssueDTO> {
         this.setStatus(issueDTO.getStatus());
 
         EchoUser user = new EchoUser();
-        user.setId(issueDTO.getResidentId());
+        user.setId(issueDTO.getResidentDTO().getId());
         this.setRaisedBy(user);
 
         Community community = new Community();
