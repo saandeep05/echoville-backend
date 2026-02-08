@@ -38,10 +38,11 @@ public class Issue extends BaseEntity<Issue, IssueDTO> {
         IssueDTO issueDTO = new IssueDTO();
         issueDTO.setId(id);
         issueDTO.setTitle(title);
-        issueDTO.setDesctiption(description);
+        issueDTO.setDescription(description);
         issueDTO.setStatus(status);
         issueDTO.setResidentId(raisedBy.getId());
         issueDTO.setCommunityId(community.getId());
+        issueDTO.setCreatedAt(createdAt);
         return issueDTO;
     }
 
@@ -49,8 +50,17 @@ public class Issue extends BaseEntity<Issue, IssueDTO> {
     public Issue toModel(IssueDTO issueDTO) {
         this.setId(issueDTO.getId());
         this.setTitle(issueDTO.getTitle());
-        this.setDescription(issueDTO.getDesctiption());
+        this.setDescription(issueDTO.getDescription());
         this.setStatus(issueDTO.getStatus());
+
+        EchoUser user = new EchoUser();
+        user.setId(issueDTO.getResidentId());
+        this.setRaisedBy(user);
+
+        Community community = new Community();
+        community.setId(issueDTO.getCommunityId());
+        this.setCommunity(community);
+
         return this;
     }
 }
