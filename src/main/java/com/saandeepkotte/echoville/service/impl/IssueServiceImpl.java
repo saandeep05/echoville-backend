@@ -6,6 +6,7 @@ import com.saandeepkotte.echoville.model.Issue;
 import com.saandeepkotte.echoville.repository.IssueRepository;
 import com.saandeepkotte.echoville.service.IssueService;
 import com.saandeepkotte.echoville.service.ValidationHelperService;
+import com.saandeepkotte.echoville.utils.enums.IssueStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,16 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue, Long> implements Is
     @Override
     public List<IssueDTO> getAllIssueForUser(String companyId, Long communityId, Long userId) {
         return List.of();
+    }
+
+    @Override
+    public IssueDTO createNewIssue(String companyId, IssueDTO issueDTO) {
+        validationHelperService.runUserCommunityValidation(companyId, issueDTO.getCommunityId(), issueDTO.getResidentId());
+        if(issueDTO.getStatus() == null) {
+            issueDTO.setStatus(IssueStatus.OPEN);
+        }
+        Issue issue = new Issue().toModel(issueDTO);
+        issue = issueRepository.save(issue);
+        return issue.toDto();
     }
 }

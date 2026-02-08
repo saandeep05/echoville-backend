@@ -9,4 +9,6 @@ public interface IssueService extends BaseService<Issue> {
     public List<IssueDTO> getAllIssuesForCommunity(String companyId, Long communityId);
 
     List<IssueDTO> getAllIssueForUser(String companyId, Long communityId, Long userId);
+
+    IssueDTO createNewIssue(String companyId, IssueDTO issueDTO);
 }
