@@ -39,7 +39,7 @@ public class IssueController {
         EntityDTO<List<IssueDTO>> entityDTO = null;
         try {
             List<IssueDTO> issueDTOList = issueService.getAllIssueForUser(companyId, communityId, userId);
-            entityDTO = RestControllerHelper.getResponseEntity(entityDTO, null);
+            entityDTO = RestControllerHelper.getResponseEntity(issueDTOList, null);
         } catch(EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
         }
