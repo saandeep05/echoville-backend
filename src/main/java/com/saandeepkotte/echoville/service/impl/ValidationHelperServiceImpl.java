@@ -70,7 +70,7 @@ public class ValidationHelperServiceImpl implements ValidationHelperService {
         if(!isValidCommunity(companyId, communityId)) {
             new Pair<>(false, "Invalid Community");
         }
-        List<House> houses = houseRepository.findByNumberAndCommunityId(houseDTO.getNumber(), communityId);
+        List<House> houses = houseRepository.findByNumberAndBlockAndCommunityId(houseDTO.getNumber(), houseDTO.getBlock(), communityId);
         return houses.isEmpty() ? new Pair<>(true, "") : new Pair<>(false, "House with number " + houseDTO.getNumber() + " already exists");
     }
 

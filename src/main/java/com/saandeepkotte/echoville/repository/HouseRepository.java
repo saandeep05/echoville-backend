@@ -11,4 +11,6 @@ public interface HouseRepository extends BaseRepository<House, Long> {
     List<House> findByNumberAndCommunityId(String number, Long communityId);
 
     List<House> findByCommunityId(Long communityId);
+
+    List<House> findByNumberAndBlockAndCommunityId(@NotBlank(message = "House number is required") String number, String block, Long communityId);
 }
