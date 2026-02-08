@@ -2,6 +2,7 @@ package com.saandeepkotte.echoville.service.impl;
 
 import com.saandeepkotte.echoville.dto.IssueDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
+import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.model.Issue;
 import com.saandeepkotte.echoville.repository.IssueRepository;
 import com.saandeepkotte.echoville.service.IssueService;
@@ -31,7 +32,12 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue, Long> implements Is
 
     @Override
     public List<IssueDTO> getAllIssueForUser(String companyId, Long communityId, Long userId) {
-        return List.of();
+        validationHelperService.runUserCommunityValidation(companyId, communityId, userId);
+        List<Issue> issues = issueRepository.findByUserId(userId);
+        if(issues.isEmpty()) {
+            throw new EchoException("No issues found");
+        }
+        return issues.stream().map(Issue::toDto).toList();
     }
 
     @Override
