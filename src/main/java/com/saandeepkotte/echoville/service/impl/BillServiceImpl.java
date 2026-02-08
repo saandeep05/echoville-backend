@@ -47,7 +47,7 @@ public class BillServiceImpl extends BaseServiceImpl<Bill, Long> implements Bill
         if(!isValidCommunity) {
             throw new EchoException("This community does not exist with the company");
         }
-        List<Bill> bills = billRepository.findAll();
+        List<Bill> bills = billRepository.findByCommunityId(communityId);
         List<BillDTO> billDTOList = bills.stream().map(Bill::toDto).toList();
         return billDTOList;
     }

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface HouseRepository extends BaseRepository<House, Long> {
-    List<House> findByNumber(String number);
+    List<House> findByNumberAndCommunityId(String number, Long communityId);
 
     List<House> findByCommunityId(Long communityId);
 }
