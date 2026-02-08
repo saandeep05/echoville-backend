@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface IssueRepository extends BaseRepository<Issue, Long> {
-    List<Issue> findByCommunityId(Long communityId);
+    List<Issue> findByCommunityIdOrderByCreatedAtDesc(Long communityId);
 
-    @Query("select I from Issue I where I.raisedBy.id = :userId")
+    @Query("select I from Issue I where I.raisedBy.id = :userId order by I.createdAt desc")
     List<Issue> findByUserId(@Param("userId") Long userId);
 }

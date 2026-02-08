@@ -23,7 +23,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue, Long> implements Is
     @Override
     public List<IssueDTO> getAllIssuesForCommunity(String companyId, Long communityId) {
         validationHelperService.runCommunityValidation(companyId, communityId);
-        List<Issue> issues = issueRepository.findByCommunityId(communityId);
+        List<Issue> issues = issueRepository.findByCommunityIdOrderByCreatedAtDesc(communityId);
         if(issues.isEmpty()) {
             throw new EchoException("No issues found");
         }
