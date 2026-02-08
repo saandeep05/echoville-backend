@@ -3,8 +3,10 @@ package com.saandeepkotte.echoville.controller;
 import com.saandeepkotte.echoville.controller.helper.RestControllerHelper;
 import com.saandeepkotte.echoville.dto.EntityDTO;
 import com.saandeepkotte.echoville.dto.IssueDTO;
+import com.saandeepkotte.echoville.dto.IssueStatusDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.service.IssueService;
+import com.saandeepkotte.echoville.utils.enums.IssueStatus;
 import com.saandeepkotte.echoville.utils.urls.RequestPathURLs;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,19 @@ public class IssueController {
         EntityDTO<IssueDTO> entityDTO = null;
         try {
             issueDTO = issueService.createNewIssue(companyId, issueDTO);
+            entityDTO = RestControllerHelper.getResponseEntity(issueDTO, null);
+        } catch(EchoException e) {
+            entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());
+        }
+        return new ResponseEntity<>(entityDTO, HttpStatus.OK);
+    }
+
+    @PutMapping(RequestPathURLs.UPDATE_ISSUE_STATUS)
+    public ResponseEntity<EntityDTO<IssueDTO>> updateStatus(@RequestHeader("companyId") String companyId,
+                                                            @RequestBody IssueStatusDTO issueStatusDTO) {
+        EntityDTO<IssueDTO> entityDTO = null;
+        try {
+            IssueDTO issueDTO = issueService.updateIssueStatus(companyId, issueStatusDTO);
             entityDTO = RestControllerHelper.getResponseEntity(issueDTO, null);
         } catch(EchoException e) {
             entityDTO = RestControllerHelper.getResponseEntity(null, e.getMessage());

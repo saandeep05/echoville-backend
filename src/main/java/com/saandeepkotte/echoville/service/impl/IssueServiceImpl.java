@@ -1,6 +1,7 @@
 package com.saandeepkotte.echoville.service.impl;
 
 import com.saandeepkotte.echoville.dto.IssueDTO;
+import com.saandeepkotte.echoville.dto.IssueStatusDTO;
 import com.saandeepkotte.echoville.exception.EchoException;
 import com.saandeepkotte.echoville.model.EchoUser;
 import com.saandeepkotte.echoville.model.Issue;
@@ -47,6 +48,20 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue, Long> implements Is
             issueDTO.setStatus(IssueStatus.OPEN);
         }
         Issue issue = new Issue().toModel(issueDTO);
+        issue = issueRepository.save(issue);
+        return issue.toDto();
+    }
+
+    @Override
+    public IssueDTO updateIssueStatus(String companyId, IssueStatusDTO issueStatusDTO) {
+        Long communityId = issueStatusDTO.getCommunityId();
+        Long userId = issueStatusDTO.getUserId();
+        validationHelperService.runUserCommunityValidation(companyId, communityId, userId);
+        Issue issue = issueRepository.findByIdAndCommunityId(issueStatusDTO.getIssueId(), communityId);
+        if(issue == null) {
+            throw new EchoException("Issue not found");
+        }
+        issue.setStatus(issueStatusDTO.getIssueStatus());
         issue = issueRepository.save(issue);
         return issue.toDto();
     }

@@ -13,4 +13,5 @@ public class RequestPathURLs {
     public static final String USER_HOUSE = "/{userId}/house";
     public static final String USER_BILLS = "/{userId}/bills";
     public static final String USER_ISSUE = "/user/{userId}";
+    public static final String UPDATE_ISSUE_STATUS = "/updateStatus";
 }
